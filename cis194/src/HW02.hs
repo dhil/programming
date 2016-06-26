@@ -21,15 +21,18 @@ colors = [Red, Green, Blue, Yellow, Orange, Purple]
 
 -- Exercise 1 -----------------------------------------
 
+count :: (a -> Bool) -> [a] -> Int
+count p = length . filter p
+
 -- Get the number of exact matches between the actual code and the guess
 exactMatches :: Code -> Code -> Int
-exactMatches = undefined
+exactMatches secret = count (uncurry (==)) . zip secret
 
 -- Exercise 2 -----------------------------------------
 
 -- For each peg in xs, count how many times is occurs in ys
 countColors :: Code -> [Int]
-countColors = undefined
+countColors code = [ count (== c) code | c <- colors ]
 
 -- Count number of matches between the actual code and the guess
 matches :: Code -> Code -> Int
