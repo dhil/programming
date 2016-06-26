@@ -52,7 +52,7 @@ hanoi n src dest temp
   | otherwise = hanoi (n-1) src temp dest ++ [(src,dest)] ++ hanoi (n-1) temp dest src
 
 
-{-- hanoi' :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
+{--hanoi' :: Integer -> Peg -> Peg -> Peg -> Peg -> [Move]
 hanoi' n src dest temp1 temp2
   | n <= 0 = []
-  | otherwise = undefined --}
+  | otherwise = hanoi' (n-1) src temp1 dest temp2 ++ [(src,dest)] ++ hanoi' (n-1) temp2 dest temp1 src--}
