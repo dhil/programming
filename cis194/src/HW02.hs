@@ -36,33 +36,42 @@ countColors code = [ count (== c) code | c <- colors ]
 
 -- Count number of matches between the actual code and the guess
 matches :: Code -> Code -> Int
-matches = undefined
+matches secret guess = sum $ zipWith min (countColors secret) (countColors guess)
 
 -- Exercise 3 -----------------------------------------
 
 -- Construct a Move from a guess given the actual code
 getMove :: Code -> Code -> Move
-getMove = undefined
+getMove secret guess = Move guess n (m - n)
+  where
+    n = exactMatches secret guess
+    m = matches secret guess
 
 -- Exercise 4 -----------------------------------------
 
 isConsistent :: Move -> Code -> Bool
-isConsistent = undefined
+isConsistent move@(Move guess _ _) secret = move == getMove secret guess
 
 -- Exercise 5 -----------------------------------------
 
 filterCodes :: Move -> [Code] -> [Code]
-filterCodes = undefined
+filterCodes move = filter (isConsistent move)
 
 -- Exercise 6 -----------------------------------------
 
 allCodes :: Int -> [Code]
-allCodes = undefined
+allCodes 0 = [[]]
+allCodes n = [ c : cs | c <- colors, cs <- allCodes (n - 1) ]
 
 -- Exercise 7 -----------------------------------------
 
 solve :: Code -> [Move]
-solve = undefined
+solve secret = guess $ allCodes (length secret)
+  where
+    guess :: [Code] -> [Move]
+    guess [] = []
+    guess (c : cs) = m : guess (filterCodes m cs)
+      where m = getMove secret c
 
 -- Bonus ----------------------------------------------
 
