@@ -130,10 +130,12 @@ factorial = For (Assign "Out" (Val 1))
    B := B - 1
 -}
 squareRoot :: Statement
-squareRoot = slist [ Assign "B" (Val 0)
+squareRoot = slist [ Assign "A" (Var "In")
+                   , Assign "B" (Val 0)
                    , While (Op (Var "A") Ge (Op (Var "B") Times (Var "B")))
                        (Incr "B")
                    , Assign "B" (Op (Var "B") Minus (Val 1))
+                   , Assign "Out" (Var "B")
                    ]
 
 {- Calculate the nth Fibonacci number
