@@ -1,0 +1,4 @@
+File "bad/missing1.f", line 12, characters 2-65:
+A case for the data constructor Nil is missing.
+Hypotheses:
+list a_1_ = list a

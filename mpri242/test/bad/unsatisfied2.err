@@ -1,0 +1,6 @@
+File "bad/unsatisfied2.f", line 17, characters 6-23:
+This type equation should but does not hold:
+a = c
+Hypotheses:
+eq _ __1_ = eq a b
+_ = __1_

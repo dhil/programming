@@ -1,0 +1,7 @@
+File "bad/mismatch4.f", line 12, characters 6-21:
+Type mismatch.
+Expected: a
+Inferred: a -> a
+Hypotheses:
+eq _ __1_ = eq a b
+_ = __1_

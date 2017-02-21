@@ -1,0 +1,5 @@
+File "bad/tcmismatch.f", line 18, characters 2-27:
+Data constructor mismatch.
+Expected a data constructor associated with the type constructor: list
+Found the data constructor: Pair
+which is associated with the type constructor: pair

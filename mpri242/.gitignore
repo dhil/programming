@@ -1,0 +1,9 @@
+# Temp
+*~
+\#*
+
+# OCaml
+*.cmx
+*.cmo
+*.o
+*.cmi

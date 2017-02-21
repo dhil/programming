@@ -1,0 +1,4 @@
+File "bad/mismatch3.f", line 4, characters 35-36:
+Type mismatch.
+Expected: b
+Inferred: a

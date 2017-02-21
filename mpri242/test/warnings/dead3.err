@@ -1,0 +1,4 @@
+File "warnings/dead3.f", line 33, characters 4-16:
+Warning: this clause is inaccessible.
+File "warnings/dead3.f", line 42, characters 4-16:
+Warning: this clause is inaccessible.
