@@ -1,0 +1,260 @@
+\documentclass[10pt,twoside,a4paper]{article}
+
+%%
+%% Packages
+%%
+\usepackage[utf8]{inputenc}            % Enable UTF-8 encoding
+\usepackage[T1]{fontenc}               % 8-bit output encoding
+\usepackage{amsthm,amsmath,amssymb} % Maths typesetting
+\usepackage{mathpartir}                % Inference rules
+\usepackage{mathwidth}                 % Render character sequences nicely in math mode
+\usepackage{stmaryrd}                  % semantic brackets
+\usepackage{xspace}                    % proper spacing for macros in text
+\usepackage{hyperref}                  % Interactive PDF
+\usepackage[scaled=0.85]{beramono}     % Typewriter font
+\usepackage{times}
+\usepackage[square,numbers]{natbib}
+
+%%
+%% Definitions, Lemmas, Theorems...
+%%
+\newcounter{theorem}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lemma}[thm]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{example}{Example}[section]
+
+%%
+%% Environments
+%%
+% array stuff
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+
+\newcommand{\bl}{\ba[t]{@{}l@{}}}
+\newcommand{\el}{\ea}
+
+% Syntax environment
+\newenvironment{eqs}{\small\ba[t]{@{}r@{~}c@{~}l@{}}}{\ea\normalsize}
+\newenvironment{equations}{\normalsize\[\ba{@{}r@{~}c@{~}l@{}}}{\ea\]\normalsize\ignorespacesafterend}
+
+%%
+%% Some hacks
+%%
+\renewcommand{\refname}{Bibliography}  % Change bibliography section heading
+
+%%
+%% Some convenient macros
+%%
+\newcommand{\domain}[1]{%
+  \mathrm{dom}(#1)%
+}
+\newcommand{\codomain}[1]{%
+  \mathrm{cod}(#1)%
+}
+\newcommand{\range}[1]{%
+  \mathrm{range}(#1)%
+}
+\newcommand{\id}[1]{%
+  \ensuremath{\mathbf{1}_{#1}}%
+}
+\newcommand{\Obj}[1]{%
+  \ensuremath{\mathrm{Obj}(#1)}%
+}
+\newcommand{\Arr}[1]{%
+  \ensuremath{\mathrm{Arr}(#1)}%
+}
+
+\newcommand{\Sets}[0]{%
+  \ensuremath{\mathbf{Sets}}%
+}
+%%
+%% Meta information
+%%
+\author{Daniel Hillerström\\\small{Laboratory for Foundations of Computer Science}\\\small{School of Informatics, the University of Edinburgh}}
+\title{\bfseries Category Theory Notes}
+\date{\today}
+
+%%
+%% Body content
+%%
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  This note contains my scribbles as I have explored category theory.
+  My endeavour in to category theory is mostly based on Awodey's
+  excellent book ``Category Theory''~\cite{Awodey11}.
+\end{abstract}
+
+%
+% Table of contents
+%
+\tableofcontents
+
+%
+% Preface
+%
+\section{Introduction}
+\label{sec:intro}
+\subsection{History}
+Lets survey the history of category theory \dots
+
+%
+% Categories
+%
+\section{Categories}
+\label{sec:cats}
+
+Sometimes category theory is popularly described as the study of
+algebra of functions. That is to say, we are more interested in how
+functions interact than the collections they act on. The following
+Definition~\ref{def:cat}, adapted from \citet{Awodey11}, makes this
+popular description precise and introduces the notion of category.
+
+\begin{definition}[Category]
+\label{def:cat}
+A category $\mathcal{C}$ is given by a collection of \emph{objects},
+written \Obj{\mathcal{C}}, and a collection of \emph{arrows} (or
+morphisms), written \Arr{\mathcal{C}}, between objects, subject to the
+following conditions
+\begin{itemize}
+  \item For each arrow $f : A \to B$, there are given objects
+\[
+  \domain{f} = A, \qquad \codomain{f} = B
+\]
+called the \emph{domain} and \emph{codomain} of $f$, respectively.
+
+  \item For each object $A$, there is an \emph{identity arrow} written
+\[
+  \id{A} : A \to A
+\]
+
+  \item For given arrows $f : A \to B$ and $g : B \to C$, that is
+\[
+  \codomain{f} = \domain{g},
+\]
+  there is a given arrow
+\[
+  g \circ f : A \to C
+\]
+called the \emph{composite} of $f$ and $g$.
+\end{itemize}
+The composition operator ($\circ$) is further subject to the following
+laws
+\begin{description}
+  \item[Unit] For all arrows $f : A \to B$
+\[
+  f \circ \id{A} = \id{B} \circ f
+\]
+
+  \item[Associativity] For all arrows $f : A \to B, g : B \to C, h : C \to D$
+\[
+  h \circ (g \circ f) = (h \circ g) \circ f
+\]
+\end{description}
+\end{definition}
+
+As with most writings we are faced with a choice of terminology. The
+above definition makes use of function syntax, i.e.  $f : A \to B$,
+yet it mentions \emph{arrows} or \emph{morphisms} rather than
+``functions'', and \emph{objects} $A$ and $B$ rather than ``sets''. As
+we shall see shortly, sets form a category, where the objects are sets
+and the arrows are exactly functions between those sets. Since set
+theory predates the development of category theory, I believe this
+particular choice of terminology is mostly due to historical reasons
+as the set theorists had already claimed the terms ``function'' and
+``set''.
+
+Note the definition states that every object has an identity arrow,
+but it says nothing about whether identity arrows are unique. As it
+turns out, the uniqueness of identity arrows follows by the unit
+axioms.
+%
+\begin{lemma}[Uniqueness of identity arrows]
+  Let $\mathcal{C}$ be a category, then for any object
+  $X \in \Obj{\mathcal{C}}$ the identity arrow
+  $\id{X} \in \Arr{\mathcal{C}}$ is unique.
+\end{lemma}
+\begin{proof}
+  Suppose there are two identity arrows $\id{X}$ and $\id{X}'$, then
+  it follows by the unit axiom that
+\[
+  \id{X} = \id{X} \circ \id{X}' = \id{X}'.
+\]
+\end{proof}
+
+Along the same lines, we can show that identity arrows on distinct
+objects are themselves distinct.
+\begin{lemma}[Distinctness of identity arrows]
+  Let $\mathcal{C}$ be a category and $X,Y \in \Obj{\mathcal{C}}$ be
+  two distinct objects, i.e. $X \neq Y$, then $\id{X}$ and $\id{Y}$
+  are distinct.
+\end{lemma}
+\begin{proof}
+  Observe that $X \neq Y$ implies
+  $\domain{\id{X}} \neq \domain{\id{Y}}$ which entails
+  $\id{X} \neq \id{Y}$.
+\end{proof}
+
+\subsection{Examples of concrete categories}
+
+Let us study some examples of categories. We begin by considering
+\emph{concrete categories}. For now it suffices to think of a concrete
+category as a category whose objects are sets. Later, we shall make
+this notion more precise.
+
+\begin{example}[The category of sets]
+  Regular sets (as from set theory) along with functions on them form
+  a category which we shall call \Sets{}. To see this, let
+  $\Obj{\Sets}$ be a collection of sets, and $\Arr{\Sets}$ be a
+  collection of functions such that
+\[
+  f : A \to B, \quad \range{f} \subseteq B, \quad \text{for all } A,B \in \Obj{\Sets}, f \in \Arr{\Sets}.
+\]
+Furthermore define the identity arrow $\id{A} : A \to A$ as
+\[
+   \id{A}(a) = a, \quad \text{for all } a \in A.
+\]
+
+Arrow composition is simply ordinary function composition (a slight
+notational overload as ($\circ$) is used to denote both composition
+operators).
+
+It remains to show that the unit and associativity laws hold
+\begin{description}
+  \item[Unit] Let $f : A \to B \in \Arr{\Sets}$, then
+\[
+  (f \circ \id{A})(a) = f(\id{A}(a)) = f(a) = \id{B}(f(a)) = (\id{B} \circ f)(a), \quad \forall a \in A.
+\]
+Hence it follows by extensionality that
+$f \circ \id{A} = \id{B} \circ f$.
+
+\item[Associativity] Let $f : A \to B, g : B \to C, h : C \to D \in \Arr{\Sets}$, then
+\[
+  (h \circ (g \circ f))(a) = h(g(f(a))) = ((h \circ g) \circ f)(a), \quad \forall a \in A.
+\]
+It follows by extensionality that
+$h \circ (g \circ f) = (h \circ g) \circ f$. Thus we have shown that
+\Sets{} is indeed a category.
+\end{description}
+\end{example}
+
+Our definition of \Sets{} says nothing about the cardinality of the
+sets involved. By restricting the involved sets to be finite, we
+immediately obtain another category $\Sets_{\mathbf{fin}}$. One can
+obtain many such categories by simply restricting the objects.
+
+\subsection{Examples of abstract categories}
+
+%
+% References
+%
+\addcontentsline{toc}{section}{Bibliography}
+\bibliographystyle{plainnat}
+\bibliography{\jobname}
+\end{document}
+
