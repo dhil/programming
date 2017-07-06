@@ -37,9 +37,10 @@
 \newcommand{\bl}{\ba[t]{@{}l@{}}}
 \newcommand{\el}{\ea}
 
-% Syntax environment
 \newenvironment{eqs}{\small\ba[t]{@{}r@{~}c@{~}l@{}}}{\ea\normalsize}
 \newenvironment{equations}{\normalsize\[\ba{@{}r@{~}c@{~}l@{}}}{\ea\]\normalsize\ignorespacesafterend}
+\newenvironment{derivation}{\small\[\ba{@{}r@{~}l@{}}}{\ea\]\normalsize\ignorespacesafterend}
+\newcommand{\reason}[1]{\quad (\text{#1})}
 
 %%
 %% Some hacks
@@ -68,9 +69,12 @@
   \ensuremath{\mathrm{Arr}(#1)}%
 }
 
-\newcommand{\Sets}[0]{%
-  \ensuremath{\mathbf{Sets}}%
+\newcommand{\Catname}[1]{%
+  \ensuremath{\mathbf{#1}}%
 }
+
+\newcommand{\Sets}[0]{\Catname{Sets}}
+\newcommand{\Pos}[0]{\Catname{Pos}}
 %%
 %% Meta information
 %%
@@ -85,14 +89,16 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-  This note contains my scribbles as I have explored category theory.
-  My endeavour in to category theory is mostly based on Awodey's
-  excellent book ``Category Theory''~\cite{Awodey11}.
+  This note exists solely for me to compose my thoughts and deepen my
+  understanding during my endeavour of category theory.  The goal of
+  this note is to develop the necessary artillery to study Lawvere
+  theories.
 \end{abstract}
 
 %
 % Table of contents
 %
+\setcounter{tocdepth}{2}
 \tableofcontents
 
 %
@@ -200,14 +206,15 @@ objects are themselves distinct.
   $\id{X} \neq \id{Y}$.
 \end{proof}
 
-\subsection{Examples of concrete categories}
+\subsection{Examples of categories}
 
 Let us study some examples of categories. We begin by considering
-\emph{concrete categories}. For now it suffices to think of a concrete
-category as a category whose objects are sets. Later, we shall make
-this notion more precise.
+categories whose objects are sets.
+
+\subsubsection{Set-theoretic categories}
 
 \begin{example}[The category of sets]
+\label{ex:sets}
   Regular sets (as from set theory) along with functions on them form
   a category which we shall call \Sets{}. To see this, let
   $\Obj{\Sets}$ be a collection of sets, and $\Arr{\Sets}$ be a
@@ -246,9 +253,51 @@ $h \circ (g \circ f) = (h \circ g) \circ f$. Thus we have shown that
 Our definition of \Sets{} says nothing about the cardinality of the
 sets involved. By restricting the involved sets to be finite, we
 immediately obtain another category $\Sets_{\mathbf{fin}}$. One can
-obtain many such categories by simply restricting the objects.
+obtain many such categories by simply restricting the objects. In
+\Sets{} we can even go as far as insisting that involved sets are
+empty. In other words, $\Sets{}_\emptyset$ is a category with only one
+object, namely, $\emptyset$. It is worthwhile to remind ourselves why
+$\Sets{}_\emptyset$ is a well-defined category: the function
+$f : \empty \to Y$ is well-defined, i.e. for all $x \in \emptyset$
+there is a unique $y \in Y$, in particular by choosing $Y = \emptyset$
+we obtain the identity function
+$\id{\emptyset} : \emptyset \to \emptyset$ for the sole object
+$\emptyset$ in $\Sets{}_{\emptyset}$. Clearly, both the unit and
+associativity laws hold.
 
-\subsection{Examples of abstract categories}
+\begin{example}[The category of posets~\cite{Awodey11}]
+  Recall that a partially ordered set (poset) is a set $A$ equipped
+  with a binary relation $a \sqsubseteq_A b$ such that the following:
+  \begin{description}
+    \item[Reflexivity] $a \sqsubseteq_A a$.
+    \item[Antisymmetry] if $a \sqsubseteq_A b$ and $b \sqsubseteq_A a$, then $a = b$.
+    \item[Transitivity] if $a \sqsubseteq_A b$ and $b \sqsubseteq_A c$, then $a \sqsubseteq_A c$.
+  \end{description}
+  A function $f : A \to B$ on ordered sets is said to be \emph{monotone} if
+\[
+  a \sqsubseteq_A a' \quad \text{implies} \quad f(a) \sqsubseteq_B f(a'),
+\]
+that is the function preserves the relative ordering amongst elements.
+
+Posets along with monotone functions form a category which we shall
+call \Pos{}. The construction of \Pos{} is straightforward: let
+\Obj{\Pos} be a collection of posets and \Arr{\Pos} be a collection of
+monotone functions between those posets. Define the identity arrow to
+be the identity function as in Example~\ref{ex:sets}. The identity
+function is trivially monotone. Furthermore, monotone functions are
+closed under composition since for all
+$f : A \to B,g : B \to C \in \Arr{\Pos}$ and $a,a' \in A$ we have
+\begin{derivation}
+ & a \sqsubseteq_A a' \\
+ \Rightarrow & \reason{monotonicity of $f$} \\
+ &  f(a) \sqsubseteq_B f(a') \\
+ \Rightarrow & \reason{monotonicity of $g$} \\
+ &   g(f(a)) \sqsubseteq_C g(f(a')).
+\end{derivation}
+It follows that $g \circ f$ is monotone, and therefore
+$g \circ f \in \Arr{\Pos}$. The proofs for the unit and associativity
+laws are the same as in Example~\ref{ex:sets}.
+\end{example}
 
 %
 % References
