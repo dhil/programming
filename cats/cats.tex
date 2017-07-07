@@ -50,16 +50,16 @@
 %%
 %% Some convenient macros
 %%
-\newcommand{\domain}[1]{%
+\newcommand{\Domain}[1]{%
   \mathrm{dom}(#1)%
 }
-\newcommand{\codomain}[1]{%
+\newcommand{\Codomain}[1]{%
   \mathrm{cod}(#1)%
 }
-\newcommand{\range}[1]{%
+\newcommand{\Range}[1]{%
   \mathrm{range}(#1)%
 }
-\newcommand{\id}[1]{%
+\newcommand{\Id}[1]{%
   \ensuremath{\mathbf{1}_{#1}}%
 }
 \newcommand{\Obj}[1]{%
@@ -75,6 +75,12 @@
 
 \newcommand{\Sets}[0]{\Catname{Sets}}
 \newcommand{\Pos}[0]{\Catname{Pos}}
+\newcommand{\Mon}[0]{\Catname{Mon}}
+
+\newcommand{\Tuple}[1]{%
+  \ensuremath{\langle #1 \rangle}%
+}
+
 %%
 %% Meta information
 %%
@@ -130,18 +136,18 @@ following conditions
 \begin{itemize}
   \item For each arrow $f : A \to B$, there are given objects
 \[
-  \domain{f} = A, \qquad \codomain{f} = B
+  \Domain{f} = A, \qquad \Codomain{f} = B
 \]
 called the \emph{domain} and \emph{codomain} of $f$, respectively.
 
   \item For each object $A$, there is an \emph{identity arrow} written
 \[
-  \id{A} : A \to A
+  \Id{A} : A \to A
 \]
 
   \item For given arrows $f : A \to B$ and $g : B \to C$, that is
 \[
-  \codomain{f} = \domain{g},
+  \Codomain{f} = \Domain{g},
 \]
   there is a given arrow
 \[
@@ -154,7 +160,7 @@ laws
 \begin{description}
   \item[Unit] For all arrows $f : A \to B$
 \[
-  f \circ \id{A} = \id{B} \circ f
+  f \circ \Id{A} = \Id{B} \circ f
 \]
 
   \item[Associativity] For all arrows $f : A \to B, g : B \to C, h : C \to D$
@@ -183,13 +189,13 @@ axioms.
 \begin{lemma}[Uniqueness of identity arrows]
   Let $\mathcal{C}$ be a category, then for any object
   $X \in \Obj{\mathcal{C}}$ the identity arrow
-  $\id{X} \in \Arr{\mathcal{C}}$ is unique.
+  $\Id{X} \in \Arr{\mathcal{C}}$ is unique.
 \end{lemma}
 \begin{proof}
-  Suppose there are two identity arrows $\id{X}$ and $\id{X}'$, then
+  Suppose there are two identity arrows $\Id{X}$ and $\Id{X}'$, then
   it follows by the unit axiom that
 \[
-  \id{X} = \id{X} \circ \id{X}' = \id{X}'.
+  \Id{X} = \Id{X} \circ \Id{X}' = \Id{X}'.
 \]
 \end{proof}
 
@@ -197,13 +203,13 @@ Along the same lines, we can show that identity arrows on distinct
 objects are themselves distinct.
 \begin{lemma}[Distinctness of identity arrows]
   Let $\mathcal{C}$ be a category and $X,Y \in \Obj{\mathcal{C}}$ be
-  two distinct objects, i.e. $X \neq Y$, then $\id{X}$ and $\id{Y}$
+  two distinct objects, i.e. $X \neq Y$, then $\Id{X}$ and $\Id{Y}$
   are distinct.
 \end{lemma}
 \begin{proof}
   Observe that $X \neq Y$ implies
-  $\domain{\id{X}} \neq \domain{\id{Y}}$ which entails
-  $\id{X} \neq \id{Y}$.
+  $\Domain{\Id{X}} \neq \Domain{\Id{Y}}$ which entails
+  $\Id{X} \neq \Id{Y}$.
 \end{proof}
 
 \subsection{Examples of categories}
@@ -213,18 +219,18 @@ categories whose objects are sets.
 
 \subsubsection{Set-theoretic categories}
 
-\begin{example}[The category of sets]
+\begin{example}[Category of sets]
 \label{ex:sets}
   Regular sets (as from set theory) along with functions on them form
   a category which we shall call \Sets{}. To see this, let
   $\Obj{\Sets}$ be a collection of sets, and $\Arr{\Sets}$ be a
   collection of functions such that
 \[
-  f : A \to B, \quad \range{f} \subseteq B, \quad \text{for all } A,B \in \Obj{\Sets}, f \in \Arr{\Sets}.
+  f : A \to B, \quad \Range{f} \subseteq B, \quad \text{for all } A,B \in \Obj{\Sets}, f \in \Arr{\Sets}.
 \]
-Furthermore define the identity arrow $\id{A} : A \to A$ as
+Furthermore define the identity arrow $\Id{A} : A \to A$ as
 \[
-   \id{A}(a) = a, \quad \text{for all } a \in A.
+   \Id{A}(a) = a, \quad \text{for all } a \in A.
 \]
 
 Arrow composition is simply ordinary function composition (a slight
@@ -235,10 +241,10 @@ It remains to show that the unit and associativity laws hold
 \begin{description}
   \item[Unit] Let $f : A \to B \in \Arr{\Sets}$, then
 \[
-  (f \circ \id{A})(a) = f(\id{A}(a)) = f(a) = \id{B}(f(a)) = (\id{B} \circ f)(a), \quad \forall a \in A.
+  (f \circ \Id{A})(a) = f(\Id{A}(a)) = f(a) = \Id{B}(f(a)) = (\Id{B} \circ f)(a), \quad \forall a \in A.
 \]
 Hence it follows by extensionality that
-$f \circ \id{A} = \id{B} \circ f$.
+$f \circ \Id{A} = \Id{B} \circ f$.
 
 \item[Associativity] Let $f : A \to B, g : B \to C, h : C \to D \in \Arr{\Sets}$, then
 \[
@@ -261,11 +267,11 @@ $\Sets{}_\emptyset$ is a well-defined category: the function
 $f : \empty \to Y$ is well-defined, i.e. for all $x \in \emptyset$
 there is a unique $y \in Y$, in particular by choosing $Y = \emptyset$
 we obtain the identity function
-$\id{\emptyset} : \emptyset \to \emptyset$ for the sole object
+$\Id{\emptyset} : \emptyset \to \emptyset$ for the sole object
 $\emptyset$ in $\Sets{}_{\emptyset}$. Clearly, both the unit and
 associativity laws hold.
 
-\begin{example}[The category of posets~\cite{Awodey11}]
+\begin{example}[Category of posets~\cite{Awodey11}]
   Recall that a partially ordered set (poset) is a set $A$ equipped
   with a binary relation $a \sqsubseteq_A b$ such that the following:
   \begin{description}
@@ -295,8 +301,60 @@ $f : A \to B,g : B \to C \in \Arr{\Pos}$ and $a,a' \in A$ we have
  &   g(f(a)) \sqsubseteq_C g(f(a')).
 \end{derivation}
 It follows that $g \circ f$ is monotone, and therefore
-$g \circ f \in \Arr{\Pos}$. The proofs for the unit and associativity
+$g \circ f \in \Arr{\Pos}$. The proofs of the unit and associativity
 laws are the same as in Example~\ref{ex:sets}.
+\end{example}
+
+\begin{example}[Category of monoids]
+A monoid $M$ is given by a triple
+\[ M = \Tuple{A,e \in A, \otimes : A \times A \to A}, \]
+where $A$ is the carrier set, $e$ is a distinguished element in $A$,
+and $\otimes$ is a binary operation such that
+\begin{description}
+\item[Unit] The distinguished element $e \in M$ is an identity
+  element, i.e.
+  \[ e \otimes a = a = a \otimes e, \quad \forall a \in M. \]
+  (We abuse notation a bit and write $a \in M$ to mean $a \in A_M$,
+  where $M$ is a monoid with carrier set $A_M$.)
+  \item[Associativity] The binary operator is associative, i.e.
+    \[  a \otimes (b \otimes c) = (a \otimes b) \otimes c, \quad \forall a,b,c \in M. \]
+\end{description}
+The definition of monoid is reminiscent of the definition of
+category. In fact, every monoid $M$ induce a category \Catname{M} with
+a single object which is the carrier set of $M$. The arrows are the
+elements of $M$, that is $\Arr{\Catname{M}} = \{ a \in A \}$. Thus
+arrows in this category are not functions. The identity arrow is the
+distinguished element of $M$. Arrow composition is defined as follows
+%
+\[ g \circ f = f \otimes g, \quad \forall f,g \in \Arr{\Catname{M}}. \]
+%
+The category associativity and unit laws hold trivially by the
+definition of the binary operator $\otimes$.
+
+There is also the category \Mon{} whose objects are monoids. In this
+category arrows are monoid homomorphisms. Recall that a function
+$f : M \to N$ between two monoids $M$ and $N$ is said to be
+\emph{homomorphism} if $f(e) = e'$ that is it maps the distinguished
+element $e \in M$ to the distinguished element $e' \in N$, and
+%
+\[ f(a \otimes_M a') = f(a) \otimes_N f(a'), \quad \forall a,a' \in M. \]
+%
+The identity arrow is the identity function $\Id{M} : M \to M$ which
+is trivially a homomorphism. Suppose $f : M_1 \to M_2$ and
+$g : M_2 \to M_3$ are homomorphisms, then their composition is also a
+homomorphism since for all $a, a' \in M$
+\begin{derivation}
+  & (g \circ f)(a \otimes_M a') \\
+  =& \reason{definition} \\
+  & g(f(a \otimes_{M_1} a')) \\
+  =& \reason{$f$ is a homomorphism} \\
+  & g(f(a) \otimes_{M_2} f(a')) \\
+  =& \reason{$g$ is a homomorphism} \\
+  & g(f(a)) \otimes_{M_3} g(f(a')).
+\end{derivation}
+Moreover, homomorphism composition is associative since ordinary
+function composition is associative. Thus it follows that \Mon{} is a
+category.
 \end{example}
 
 %
