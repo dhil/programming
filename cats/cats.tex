@@ -340,9 +340,12 @@ element $e \in M$ to the distinguished element $e' \in N$, and
 \[ f(a \otimes_M a') = f(a) \otimes_N f(a'), \quad \forall a,a' \in M. \]
 %
 The identity arrow is the identity function $\Id{M} : M \to M$ which
-is trivially a homomorphism. Suppose $f : M_1 \to M_2$ and
-$g : M_2 \to M_3$ are homomorphisms, then their composition is also a
-homomorphism since for all $a, a' \in M$
+is trivially a homomorphism since $\Id{M}(e) = e$ and
+\[ \Id{M}(a \otimes a') = a \otimes a' = \Id{M}(a) \otimes \Id{M}(a') \quad \forall a,a' \in M. \]
+%
+Suppose $f : M_1 \to M_2$ and $g : M_2 \to M_3$ are homomorphisms,
+then their composition is also a homomorphism since for all
+$a, a' \in M$
 \begin{derivation}
   & (g \circ f)(a \otimes_{M_1} a') \\
   =& \reason{definition} \\
@@ -352,9 +355,10 @@ homomorphism since for all $a, a' \in M$
   =& \reason{$g$ is a homomorphism} \\
   & g(f(a)) \otimes_{M_3} g(f(a')).
 \end{derivation}
-Moreover, homomorphism composition is associative since ordinary
-function composition is associative. Thus it follows that \Mon{} is a
-category.
+Moreover, $g(f(e_1)) = g(e_2) = e_3$ for $e_1 \in M_1$, $e_2 \in
+M_2$, and $e_3 \in M_3$.  Homomorphism composition is associative
+since ordinary function composition is associative. Thus it follows
+that \Mon{} is a category.
 \end{example}
 
 %
