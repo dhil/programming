@@ -33,7 +33,7 @@ let pair_sums : int -> int array -> (int * int) list
         let open HashSet in
         let n = k - i in
         if not (mem seen n) then
-          (put seen n true; sums)
+          (put seen i (); sums)
         else
           (min i n, max i n) :: sums)
       [] arr
@@ -52,7 +52,7 @@ let pair_sums_distinct : int -> int array -> (int * int) list
         let open HashSet in
         let n = k - i in
         if not (mem seen n) then
-          put seen i true
+          put seen i ()
         else
           put pairs i (min i n, max i n))
       arr;
