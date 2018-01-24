@@ -6,7 +6,7 @@
 (* ... in other words this task asks to compute the "set difference"
    on arrays. *)
 
-(* This solution is more general *)
+(* This solution is more general. O(n). *)
 let diff : int array -> int array -> int array
   = fun a b ->
   let set = Hashtbl.create (Array.length b) in
@@ -32,3 +32,11 @@ let diff : int array -> int array -> int array
         (a, i+1))
       dset (darr, 0)
   in a
+
+(* Specialised solution. O(n). *)
+let diff' : int array -> int array -> int
+  = fun a b ->
+    Array.fold_left
+      (fun acc x ->
+        acc lxor x)
+      0 (Array.append a b)
