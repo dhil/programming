@@ -63,7 +63,6 @@ module Graph = struct
       g
 
   let has_cycle g =
-    let exception Break in
     let visited =
       HashSet.make (Array.length g)
     in
