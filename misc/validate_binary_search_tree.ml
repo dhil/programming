@@ -36,3 +36,14 @@ let rec validate test = function
      test k
      && validate (fun k' -> k' <= k && test k') l
      && validate (fun k' -> k' > k && test k') r
+
+let validate' tree =
+  let rec validate min max = function
+    | Nil -> true
+    | Node (l, k, r) ->
+       min <= k
+       && k <= max
+       && validate min k l
+       && validate k max r
+  in
+  validate min_int max_int tree
