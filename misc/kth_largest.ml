@@ -91,3 +91,20 @@ let kth_largest' : int array -> int -> int option
   = fun a k ->
     if k < 0 || k >= Array.length a then None
     else Some (select a k)
+
+(* Variant: Find the kth smallest element of A ∪ B.
+   Source: http://typeocaml.com/2017/10/19/pearl-no-4-double-binary-search/ *)
+let kth_union k a b =
+  let sa = Array.length a in
+  let sb = Array.length b in
+  let rec kth k (a, la, ha) (b, lb, hb) =
+    if la >= ha+1 then b.(k+lb)
+    else if lb >= hb+1 then a.(k+la)
+    else
+      let ma = (ha+la)/2 and mb = (hb+lb)/2 in
+      match a.(ma) < b.(mb), k >= ma-la+1+mb-lb with
+      | true, true -> kth (k-(ma-la+1)) (a, ma+1, ha) (b, lb, hb)
+      | true, false -> kth k (a, la, ha) (b, lb, mb-1)
+      | _ -> kth k (b, lb, hb) (a, la, ha) (* swap *)
+  in
+  kth k (a, 0, sa-1) (b, 0, sb-1)
