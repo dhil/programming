@@ -40,3 +40,13 @@ let diff' : int array -> int array -> int
       (fun acc x ->
         acc lxor x)
       0 (Array.append a b)
+
+let missing_char : string -> string -> char
+  = fun s0 s1 ->
+    let array_of_string s =
+      Array.init (String.length s) (fun i -> Char.code s.[i])
+    in
+    let a0, a1 = array_of_string s0, array_of_string s1 in
+    let code = diff' a0 a1 in
+    Char.chr code
+
