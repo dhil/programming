@@ -12,25 +12,26 @@ let explode : string -> char list
   in loop 0 s
 
 module Dictionary = struct
-  type t = Dict of t CharMap.t [@@unboxed]
+  type t = Node of bool * t CharMap.t
 
-  let empty : t = Dict (CharMap.empty)
+  let empty : t = Node (false, CharMap.empty)
 
   let rec add : char list -> t -> t
-    = fun word (Dict dict) ->
+    = fun word (Node (present, dict)) ->
     match word with
-    | [] -> Dict dict
+    | [] -> Node (true, dict)
     | c :: cs ->
-       Dict (try
-             let dict' = CharMap.find c dict in
-             CharMap.add c (add cs dict') dict
-           with Not_found ->
-             CharMap.add c (add cs (Dict CharMap.empty)) dict)
+       Node (present,
+             (try
+                let dict' = CharMap.find c dict in
+                CharMap.add c (add cs dict') dict
+              with Not_found ->
+                CharMap.add c (add cs empty) dict))
 
   let rec exists : char list -> t -> bool
-    = fun word (Dict dict) ->
+    = fun word (Node (present, dict)) ->
     match word with
-    | [] -> true
+    | [] -> present
     | '*' :: cs ->
        CharMap.exists (fun _ dict' -> exists cs dict') dict
     | c :: cs ->
@@ -48,7 +49,7 @@ let sample_dict =
                          (add (explode "quux") empty)))))
 
 let test_inputs =
-  ["*"; ""; "foobar"; "fo*bar"; "f**bar"; "foo***"; "bar"; "a**a"; "quu*"; "word"; "wee"; "foo*az"]
+  ["*"; ""; "foobar"; "fo*bar"; "f**bar"; "foo***"; "foobar*"; "f*o*a*"; "bar"; "a**a"; "quu*"; "word"; "wee"; "foo*az"; "foo"; "baz"; "f"; "fo"; "o"]
 
 let tests =
   List.map (fun s -> (s, Dictionary.exists (explode s) sample_dict)) test_inputs
