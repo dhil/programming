@@ -1,0 +1,165 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}   % Enable UTF-8 tying
+\usepackage[T1]{fontenc}      % Fixes issues with accented characters
+\usepackage[british]{babel}   % British English
+\usepackage{amsmath}          % Mathematics library
+\usepackage{amssymb}          % Provides math fonts
+\usepackage{amsthm}           % Provides \newtheorem, \theoremstyle, etc.
+\usepackage{mathtools}
+% Theorem environments
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+% Example environment.
+\makeatletter
+\def\@endtheorem{\hfill$\blacksquare$\endtrivlist\@endpefalse} % inserts a black square at the end.
+\makeatother
+\newtheorem{example}{Example}[section]
+% Lindley's equations and derivation environments.
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+\newcommand{\bl}{\ba[t]{@{}l@{}}}
+\newcommand{\el}{\ea}
+\newenvironment{eqs}{\ba{@{}r@{~}c@{~}l@{}}}{\ea}
+\newenvironment{equations}{\[\ba{@{}r@{~}c@{~}l@{}}}{\ea\]\ignorespacesafterend}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{$\ast$\theequation}} % Numbering equations
+\newenvironment{derivation}{\begin{displaymath}\ba{@{}r@{~}l@{}}}{\ea\end{displaymath}\ignorespacesafterend}
+\newcommand{\reason}[1]{\quad (\text{#1})}
+
+% Metadata
+\author{Daniel Hillerström}
+\date{\today}
+\title{Solved Exercises in Proof by Induction}
+
+\begin{document}
+\maketitle
+\section{The Induction Principle}
+The induction principle can be summarised as follows.
+\begin{definition}
+  Let $P(n)$ be a statement which depends on $n \in \mathbb{N}$. Then
+  $P(n)$ is true for all $n$ if
+  \begin{description}
+    \item[Base step] $P(1)$ is true.
+    \item[Inductive step] Assume $P(k)$ is true, then show that with
+      this assumption $P(k + 1)$ must be true.
+  \end{description}
+\end{definition}
+
+\section{Summations}
+
+\begin{theorem}
+  \[
+    \displaystyle\sum_{i=1}^ni = \frac{n(n+1)}{2}
+  \]
+\end{theorem}
+%
+\begin{proof}
+  The universe of discourse is $\mathbb{N} = \{1,2,3,\dots\}$ and $i,n\in\mathbb{N}$.
+  \begin{description}
+  \item[Base step] $n = 1$. This case follows by direct calculation.
+    \[
+      1 = \frac{1\cdot(1+1)}{2}
+    \]
+  \item[Inductive step] Assume $\sum_{i=1}^ki = \frac{k(k+1)}{2}$.
+    The induction hypothesis can also be written as follows.
+    %
+    \[
+      1+2\cdots+k = \frac{k(k+1)}{2}.
+    \]
+    %
+    Now take $n = k + 1$. We need to show the following.
+    \[
+      1+2+\cdots+k+(k+1) = \frac{(k+1)((k+1)+1)}{2}.
+    \]
+    %
+    The proof proceeds by direct calculation.
+    %
+    \begin{derivation}
+      &1+2\cdots+k+(k+1)\\
+     =& \reason{induction hypothesis}\\
+      &\displaystyle\frac{k(k+1)}{2} + (k+1)\\
+     =& \reason{multiply by $1 = \frac{2}{2}$}\\
+      & \displaystyle\frac{k(k+1)}{2} + \frac{2(k+1)}{2}\\
+     =& \reason{fraction addition}\\
+      & \displaystyle\frac{k(k+1)+2(k+1)}{2}\\
+     =& \reason{distribution of multiplication over addition}\\
+      &\displaystyle\frac{k^2+3k+2}{2}\\
+     =&\reason{factorisation}\\
+      &\displaystyle\frac{(k+1)(k+2)}{2} \\
+    \end{derivation}
+  \end{description}
+\end{proof}
+
+\begin{theorem}
+  \[
+    \displaystyle\sum_{i=1}^ni^2 = \frac{n(n + 1)(2n + 1)}{6}
+  \]
+\end{theorem}
+\begin{proof}
+  The universe of discourse is $\mathbb{N} = \{1,2,3,\dots\}$ and $i,n\in\mathbb{N}$.
+  \begin{description}
+  \item[Base step] $n = 1$. This case follows by direct calculation.
+    \[
+      1^2 = \frac{1*(1 + 1)(2 * 1 + 1)}{6} = 1.
+    \]
+  \item[Inductive step] Assume
+    $\sum_{i = 1}^ki^2 = \frac{k(k + 1)(2k + 1)}{6}$. The induction
+    hypothesis can alternatively be written as follows.
+    %
+    \[
+      \displaystyle 1+4+9+16+25+36+\cdots+k^2 = \frac{k(k+1)(2k+1)}{6}.
+    \]
+    %
+    We need to show that $1+4+\cdots+k^2+(k + 1)^2 = \frac{(k+1)(k+2)(2k+3)}{6}$.
+    %
+    \begin{derivation}
+      &1+4+\cdots+k^2+(k+1)^2\\
+      =& \reason{induction hypothesis}\\
+      &\displaystyle\frac{k(k+1)(2k+1)}{6} + (k+1)^2\\
+      =& \reason{multiply by $1 = \frac{6}{6}$}\\
+      &\displaystyle\frac{k(k+1)(2k+1)+6(k+1)^2}{6}\\
+      =& \reason{multiplication}\\
+      &\displaystyle\frac{2k^3+9k^2+13k+6}{6} = \frac{(k+1)(k+2)(2k+3)}{6}\\
+    \end{derivation}
+  \end{description}
+\end{proof}
+
+\begin{theorem}
+  \[
+    \displaystyle\sum_{i=1}^n2^{i-1} = 2^n-1
+  \]
+\end{theorem}
+\begin{proof}
+  The universe of discourse is $\mathbb{N} = \{1,2,3,\dots\}$ and $i,n\in\mathbb{N}$.
+  \begin{description}
+  \item[Base step] $n = 1$. This case follows by direct calculation.
+    \[
+      2^0 = 2^1 - 1 = 1
+    \]
+  \item[Inductive step] Assume $\sum_{i = 1}^k2^{i-1} = 2^k - 1$. The
+    induction hypothesis can also be written as follows.
+    %
+    \[
+      1 + 2 + 4 + 8 + 16 + \cdots + 2^{k-1} = 2^k - 1.
+    \]
+    %
+    We need to show that $1+2+\cdots+2^{k-1}+2^k = 2^{k+1} - 1$.
+    %
+    \begin{derivation}
+      &1+2+\cdots+2^{k-1}+2^k\\
+      =& \reason{induction hypothesis}\\
+      &(2^k - 1) + 2^k\\
+      =& \reason{factorise common term}\\
+      & 2*2^k - 1\\
+      =& \reason{exponentiation}\\
+      &2^{k+1} - 1
+    \end{derivation}
+  \end{description}
+\end{proof}
+
+
+\end{document}
