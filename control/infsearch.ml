@@ -152,7 +152,7 @@ module Eff = struct
       match p (fun n -> Effect.perform (Search n)) with
       | ans -> (fun st -> (ans, st))
       | effect Search n, k ->
-         lzet open Multicont.Deep in
+         let open Multicont.Deep in
          let r = promote k in
          (fun (st : (Nat.t * bool) list) ->
            match List.assoc_opt n st with
@@ -163,6 +163,27 @@ module Eff = struct
                | (false, _) -> resume r Bit.zero ((n, false) :: st)))
     in
     snd (f [])
+
+  let find_neighbourhood' p =
+    let st = Sys.opaque_identity (ref []) in
+    let ans = match p (fun n -> Effect.perform (Search n)) with
+      | ans -> (ans, !st)
+      | effect Search n, k ->
+         let open Multicont.Deep in
+         let r = promote k in
+         match List.assoc_opt n !st with
+         | Some v ->
+            resume r (Bit.of_bool v)
+         | None ->
+            let old_st = !st in
+            st := (n, true) :: !st;
+            match resume r Bit.one with
+            | (true, st) -> (true, st)
+            | (false, _) ->
+               st := (n, false) :: old_st;
+               resume r Bit.zero
+    in
+    snd ans
 
   let epsilon : (Cantor.t -> bool) -> Cantor.t
     = fun p ->
